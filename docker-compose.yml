@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  influxdb:
+    image: influxdb:2.5.1-alpine
+    container_name: influxdb
+    restart: unless-stopped
+    environment:
+      user: "997:997"
+    env_file:
+      - influxv2.env
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - /opt/ti/influxdbv2/varlib:/var/lib/influxdb2
+      - /opt/ti/influxdbv2/config.yml:/etc/influxdb2/config.yml
+      - /opt/ti/influxdbv2/ssl/influxdb-selfsigned.crt:/etc/ssl/influxdb-selfsigned.crt
+      - /opt/ti/influxdbv2/ssl/influxdb-selfsigned.key:/etc/ssl/influxdb-selfsigned.key
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8086:8086"
+
+volumes:
+  influxdb2:
